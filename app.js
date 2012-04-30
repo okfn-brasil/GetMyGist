@@ -3,11 +3,6 @@ jQuery(document).ready(function() {
   if (qs) {
     loadGist(qs.gist_id || qs.gist_url);
   }
-
-  $('.js-gist-info').submit(function(e) {
-    e.preventDefault();
-    loadGist($('.gist-url').val());
-  });
 })
 
 function loadGist(gistIdOrUrl) {
