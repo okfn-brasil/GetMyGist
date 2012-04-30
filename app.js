@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
 function loadGist(gistIdOrUrl) {
   var gistId = gistIdOrUrl;
   if (gistIdOrUrl.indexOf('http') != -1) {
-    var parts = normalUrl.split('/');
+    var parts = gistIdOrUrl.split('/');
     gistId = parts[parts.length-1];
   }
   var url = 'https://api.github.com/gists/' + gistId;
