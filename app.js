@@ -24,6 +24,32 @@ jQuery(document).ready(function() {
   if(readCookie("access_token")){
     jQuery("#login").hide();
   }
+
+  jQuery(".js-gist-edit").submit(function(e){
+    var body = jQuery(".js-data").val()
+      , gistId = jQuery(".gist-id").val()
+      , gist_content = {
+          "files": {
+              "application.js": {
+                  "content": body
+              }
+          }
+      };
+
+
+    var url = 'https://api.github.com/gists/' + gistId + '?access_token='+ readCookie("access_token")
+    $.ajax({
+      url: url,
+      type: "PATCH",
+      data: JSON.stringify(gist_content),
+      success: function(gist){
+        alert("saved!");
+        loadAndRunGist(gist.files["application.js"].content);
+      }
+    });
+    e.preventDefault();
+  });
+
 })
 
 var authGithub = function(code){
@@ -48,12 +74,19 @@ function loadGist(gistIdOrUrl) {
     dataType: 'jsonp',
     success: function(data) {
       $.each(data.data.files, function(key,value) {
-        $('.js-data').val(value.content);
-        eval(value.content);
-        return false;
+        if(key.match("application.js")){
+          loadAndRunGist(value.content)
+          return false;
+        }
       });
     }
   });
+  jQuery(".gist-id").val(gistId);
+}
+
+var loadAndRunGist = function(data){
+  eval(data);
+  $('.js-data').val(data);
 }
 
 // Parse a URL query string (?xyz=abc...) into a dictionary.
