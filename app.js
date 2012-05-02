@@ -17,9 +17,13 @@ jQuery(document).ready(function() {
     }
   }
 
-  $("#login").click(function(){
+  jQuery("#login").click(function(){
     window.location = "https://github.com/login/oauth/authorize?client_id="+ github.clientId +"&scope="+ github.scope;
   });
+
+  if(readCookie("access_token")){
+    jQuery("#login").hide();
+  }
 })
 
 var authGithub = function(code){
@@ -29,6 +33,7 @@ var authGithub = function(code){
 var storeGithubToken = function(token, type){
   createCookie("access_token", token);
   createCookie("token_type", type);
+  jQuery("#login").hide();
 };
 
 function loadGist(gistIdOrUrl) {
