@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
       type: "PATCH",
       data: JSON.stringify(gist_content),
       success: function(gist){
-        alert("saved!");
+        console.log(" ==== Saved! ====");
         loadAndRunGist(gist.files["application.js"].content);
       }
     });
