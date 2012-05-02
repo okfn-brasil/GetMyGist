@@ -8,9 +8,28 @@ var github = {
 jQuery(document).ready(function() {
   var qs = parseQueryString(window.location.search);
   if (qs) {
-    loadGist(qs.gist_id || qs.gist_url);
+    if(qs.gist_id || qs.gist_url){
+      loadGist(qs.gist_id || qs.gist_url);
+    } else if(qs.code){
+      authGithub(qs.code);
+    } else if(qs.access_token){
+      storeGithubToken(qs.access_token, qs.token_type);
+    }
   }
+
+  $("#login").click(function(){
+    window.location = "https://github.com/login/oauth/authorize?client_id="+ github.clientId +"&scope="+ github.scope;
+  });
 })
+
+var authGithub = function(code){
+  window.location = github.authServer+"?client_id="+ github.clientId+ "&client_secret="+ github.clientSecret +"&code="+ code +"&redirect_url="+window.location.href.split("?")[0];
+};
+
+var storeGithubToken = function(token, type){
+  createCookie("access_token", token);
+  createCookie("token_type", type);
+};
 
 function loadGist(gistIdOrUrl) {
   var gistId = gistIdOrUrl;
