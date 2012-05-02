@@ -1,3 +1,10 @@
+var github = {
+  clientId: "0fc40d9e0188c351a069",
+  scope: "user,gist",
+  clientSecret: "344cef773df669a8fbb5d0ab086d245fab161ba8",
+  authServer: "http://getmygist.herokuapp.com/token"
+};
+
 jQuery(document).ready(function() {
   var qs = parseQueryString(window.location.search);
   if (qs) {
