@@ -14,6 +14,10 @@ var github = function(){
 
   return $.extend(config, {
     scope: "user,gist",
+    url: function(resource){
+      return "https://api.github.com"+ resource +
+                "?access_token="+helpers.cookie.read("access_token")
+    }
   });
 };
 

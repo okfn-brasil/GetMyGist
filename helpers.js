@@ -45,12 +45,6 @@
         this.create(name,"",-1);
       }
     },
-    githubUrl: function(resource, params){
-      params = params ? params : "";
-      return "https://api.github.com"+ resource +
-                "?access_token="+this.cookie.read("access_token")+
-                params;
-    },
     javascriptFiles: function(files) {
       return $.map(files, function(file){
                return file.filename.match(/\.js$/) ? file : null;

@@ -11,7 +11,7 @@
         helpers.cookie.create("access_token", access_token);
         helpers.cookie.create("token_type", token_type);
         $.ajax({
-          url: helpers.githubUrl("/user"),
+          url: github().url("/user"),
           success: function(data){
             helpers.cookie.create("current_user", JSON.stringify(data))
             getMyGist.currentUser.updateInfo();
@@ -51,7 +51,7 @@
             getMyGist.currentUser.login(params.access_token, params.token_type);
           }
           $.ajax({
-            url: helpers.githubUrl("/gists"),
+            url: github().url("/gists"),
             success: function(gists){
               $.each(gists, function(i, gist){
                var javascriptFiles = helpers.javascriptFiles(gist.files);
@@ -83,7 +83,7 @@
         gist: function(params){
           $("#loading").slideDown();
           var id = params.id,
-              url = helpers.githubUrl("/gists/" + id);
+              url = github().url("/gists/" + id);
           $("#gistEdit textarea").remove();
           $.ajax({
             url: url,
@@ -116,7 +116,7 @@
           $("#loading").slideDown();
           var id = params.id;
           $.ajax({
-            url: helpers.githubUrl("/gists/"+id),
+            url: github().url("/gists/"+id),
             dataType: "jsonp",
             success: function(gist) {
               var javascriptFiles = helpers.javascriptFiles(gist.data.files);
@@ -143,7 +143,7 @@
     update: function(e){
       $("#loading").slideDown();
       var gistId = $(this).attr("id"),
-          url = helpers.githubUrl("/gists/"+gistId),
+          url = github().url("/gists/"+gistId),
           data = { "files": {} };
 
       $(this).find("textarea").each(function() {
