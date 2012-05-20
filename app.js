@@ -21,10 +21,10 @@
             getMyGist.login(params.access_token, params.token_type);
           }
           $.ajax({
-            url: helper.githubUrl("/gists"),
+            url: helpers.githubUrl("/gists"),
             success: function(gists){
               $.each(gists, function(i, gist){
-               var javascriptFiles = helper.javascriptFiles(gist.files);
+               var javascriptFiles = helpers.javascriptFiles(gist.files);
                   var gist_link = $("<a class='gist_link'></a>")
                               .html("view in gist.github.com")
                               .attr("href", gist.html_url)
@@ -53,7 +53,7 @@
         gist: function(params){
           $("#loading").slideDown();
           var id = params.id,
-              url = helper.githubUrl("/gists/" + id);
+              url = helpers.githubUrl("/gists/" + id);
           $("#gistEdit textarea").remove();
           $.ajax({
             url: url,
@@ -66,7 +66,7 @@
                    .appendTo("#gistEdit form")
               });
 
-              var javascriptFiles = helper.javascriptFiles(gist.data.files);
+              var javascriptFiles = helpers.javascriptFiles(gist.data.files);
               if(javascriptFiles.length > 0){
                 $("<a class='action'> Run </a>")
                     .attr("href", "?page=run&id="+id)
@@ -86,10 +86,10 @@
           $("#loading").slideDown();
           var id = params.id;
           $.ajax({
-            url: helper.githubUrl("/gists/"+id),
+            url: helpers.githubUrl("/gists/"+id),
             dataType: "jsonp",
             success: function(gist) {
-              var javascriptFiles = helper.javascriptFiles(gist.data.files);
+              var javascriptFiles = helpers.javascriptFiles(gist.data.files);
               if(javascriptFiles.length > 0){
                 $.each(javascriptFiles, function (i, file) {
                   eval(file.content)
@@ -113,7 +113,7 @@
     update: function(e){
       $("#loading").slideDown();
       var gistId = $(this).attr("id"),
-          url = helper.githubUrl("/gists/"+gistId),
+          url = helpers.githubUrl("/gists/"+gistId),
           data = { "files": {} };
 
       $(this).find("textarea").each(function() {
@@ -137,21 +137,21 @@
     },
 
     login: function(access_token, token_type){
-      if(access_token ==  helper.cookie.read("access_token")){
+      if(access_token ==  helpers.cookie.read("access_token")){
         return;
       }
-      helper.cookie.create("access_token", access_token);
-      helper.cookie.create("token_type", token_type);
+      helpers.cookie.create("access_token", access_token);
+      helpers.cookie.create("token_type", token_type);
       $.ajax({
-        url: helper.githubUrl("/user"),
+        url: helpers.githubUrl("/user"),
         success: function(data){
-          helper.cookie.create("current_user", JSON.stringify(data))
+          helpers.cookie.create("current_user", JSON.stringify(data))
           getMyGist.updateUserInfo();
         }
       });
     },
     updateUserInfo: function() {
-      var currentUser = JSON.parse(helper.cookie.read("current_user"));
+      var currentUser = JSON.parse(helpers.cookie.read("current_user"));
       if(currentUser && currentUser.name){
         $("#current_user img").attr("src", currentUser.avatar_url)
           .attr("title", currentUser.name + " ("+currentUser.login+")")
@@ -160,75 +160,11 @@
     }
   };
 
-
-  var helper = {
-    // Parse a URL query string (?xyz=abc...) into a dictionary.
-    parseQueryString: function(q) {
-      if (!q) {
-        return {};
-      }
-      var urlParams = {},
-        e, d = function (s) {
-          return unescape(s.replace(/\+/g, " "));
-        },
-        r = /([^&=]+)=?([^&]*)/g;
-
-      if (q && q.length && q[0] === '?') {
-        q = q.slice(1);
-      }
-      while (e = r.exec(q)) {
-        // TODO: have values be array as query string allow repetition of keys
-        urlParams[d(e[1])] = d(e[2]);
-      }
-      return urlParams;
-    },
-    cookie: {
-      create: function(name,value,days) {
-        if (days) {
-          var date = new Date();
-          date.setTime(date.getTime()+(days*24*60*60*1000));
-          var expires = "; expires="+date.toGMTString();
-        }
-        else var expires = "";
-        document.cookie = name+"="+value+expires+"; path=/";
-      },
-
-      read: function(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
-          var c = ca[i];
-          while (c.charAt(0)==' ') c = c.substring(1,c.length);
-          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-        }
-        return null;
-      },
-
-      erase: function(name) {
-        this.create(name,"",-1);
-      }
-    },
-    githubUrl: function(resource, params){
-      params = params ? params : "";
-      return "https://api.github.com"+ resource +
-                "?access_token="+this.cookie.read("access_token")+
-                params;
-    },
-    userIsLogged: function(){
-      return !!this.cookie.read("access_token");
-    },
-    javascriptFiles: function(files) {
-      return $.map(files, function(file){
-               return file.filename.match(/\.js$/) ? file : null;
-             });
-    }
-  }
-
   $(document).ready(function(){
-    var page = helper.parseQueryString(window.location.search);
+    var page = helpers.parseQueryString(window.location.search);
     getMyGist.page.goTo(page);
 
-    helper.userIsLogged() ? $("a#myGists").show() : $("a#login").show()
+    helpers.userIsLogged() ? $("a#myGists").show() : $("a#login").show()
 
     $("#login").click(function(){
       window.location = "https://github.com/login/oauth/authorize?client_id="+ github().clientId +"&scope="+ github().scope;
