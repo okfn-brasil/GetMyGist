@@ -1,13 +1,56 @@
-<body>
-  <a href="#login" id="login">Login via Github</a>
-  <form class="js-gist-info">
-    <input type="text" name="gist_url" class="js-input" value="https://gist.github.com/2561655" />
-  </form>
-  <form class="js-gist-edit">
-    <input type="hidden" class="gist-id">
-    <textarea class="js-data" style="width: 400px; height: 500px;"></textarea>
-    <input type="submit" value="save" />
-  </form>
-<script src="vendorjs/jquery/1.7.1/jquery.js"></script>
-<script src="app.js"></script>
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Get My Gist </title>
+    <link href='http://fonts.googleapis.com/css?family=Emblema+One|Quattrocento+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="stylesheets/reset.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/application.css" type="text/css" media="screen" charset="utf-8">
+  </head>
+  <body>
+    <div>
+      <header>
+        <h1><a href="?page=homepage">Get My Gist</a></h1>
+        <div id="current_user">
+          <a href="?page=gists"><img src=""></a>
+        </div>
+      </header>
+      <div id="content">
+        <div class="message" id="loading">
+          Loading...
+        </div>
+        <div class="message" id="done">
+          Done!
+        </div>
+        <section id="homepage">
+          <p> The idea of this project is to run/write your gist on the web. Many times you need run a small javascript but need build a server or another thing for to do it, with <strong>Get my Gist</strong> you can make it very easy, only connect with <a href="github.com">github account</a> and run your gist</p>
+          <h2> How it works </h2>
+          <p>
+            You will connect with github account and <strong>Get my gist</strong> get all your gist from <a href="http://gist.github.com">gist.github.com</a>, if you have a javascript gits will show option to run this gist, else you can only edit it
+          </p>
+          <a href="#login" id="login">Login via Github</a>
+          <a href="?page=gists" id="myGists"> My gists </a>
+        </section>
+        <section id="getMyGist">
+          <h2>Your gists </h2>
+          <ul id="gists">
+          </ul>
+        </section>
+        <section id="gistEdit">
+          <form class="edit"> </form>
+        </section>
+        <section id="run">
+          <a href="?page=gists" class="action"> Back </a>
+        </section>
+      </div>
+      <footer>
+        <ul>
+          <li> <a href="http://okfn.org/">okfn.org</a> </li>
+          <li> <a href="https://github.com/OKFN-BR/GetMyGist"> code in github </a> </li>
+          <li> <a href="https://github.com/OKFN-BR/GetMyGist/issues/new"> found a bug? report! </a> </li>
+        </ul>
+      </div>
+      <script src="vendorjs/jquery/1.7.1/jquery.js">src</script>
+      <script src="app.js"></script>
+    </body>
+  </html>
