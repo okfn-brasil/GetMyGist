@@ -1,0 +1,117 @@
+a{
+  color: #DE365A;
+  text-decoration: underline
+}
+body{
+  font: normal 13px/26px 'Quattrocento Sans', 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
+}
+
+body > div{
+  width: 960px;
+  margin: 0 auto;
+}
+header{
+  margin: 60px 0;
+  overflow: hidden
+}
+header h1{
+  float: left;
+  font: normal 65px/88px 'Emblema One', Georgia;
+  text-transform: lowercase;
+}
+header h1 a{
+  text-decoration: none;
+  color: #a0123e
+}
+
+header #current_user{
+  display: none;
+  margin-top: 30px;
+  float: right;
+}
+
+header #current_user img{
+  float: right;
+  border-radius: 10px;
+  width: 45px;
+}
+
+#content{
+  background: #E0E0E0;
+  border: 1px solid #cdcdcd;
+  border-radius: 2px
+}
+#content h2{
+  font-size: 18px;
+}
+
+#content p{
+  font-size: 15px;
+  margin-bottom: 35px
+}
+#content p:last-child{
+  margin-bottom: 0
+}
+
+#content section, #content #done{
+  display: none;
+}
+
+#content .message, #content #getMyGist, #content #homepage, #content #gistEdit, #content #run{
+  margin: 30px 110px
+}
+
+#content #homepage a#login, #content #homepage a#myGists{
+  display: none
+}
+#content .message{
+  font-size: 28px;
+  text-align: center;
+  color: #C1C1C1
+}
+#content ul#gists li{
+  border: 1px solid #cdcdcd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#content ul#gists li p{
+  margin: 0;
+  font-size: 16px;
+}
+
+#content ul#gists li a.gist_link{
+   font-size: 12px;
+   float: right;
+}
+
+#content a.action{
+  border: 1px solid #000;
+  padding: 2px 10px;
+  border-radius: 3px;
+  margin: 0 5px;
+  text-decoration: none;
+  color: #000;
+}
+
+#content a.action:hover{
+  background: #C7C7C7;
+}
+
+#content #gistEdit textarea{
+  display: block;
+  width: 700px;
+  min-height: 300px;
+  margin: 20px auto;
+  border: 1px solid #999;
+  border-radius: 3px
+}
+
+footer li{
+  float: left;
+  padding: 5px 10px;
+}
+footer li a{
+  font-size: 13px
+}
