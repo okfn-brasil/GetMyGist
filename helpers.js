@@ -51,9 +51,6 @@
                 "?access_token="+this.cookie.read("access_token")+
                 params;
     },
-    userIsLogged: function(){
-      return !!this.cookie.read("access_token");
-    },
     javascriptFiles: function(files) {
       return $.map(files, function(file){
                return file.filename.match(/\.js$/) ? file : null;

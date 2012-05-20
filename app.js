@@ -1,5 +1,35 @@
 (function($){
   var getMyGist = {
+    currentUser: {
+      info: function(){
+        return JSON.parse(helpers.cookie.read("current_user"));
+      },
+      login: function(access_token, token_type){
+        if(access_token == helpers.cookie.read("access_token")){
+          return;
+        }
+        helpers.cookie.create("access_token", access_token);
+        helpers.cookie.create("token_type", token_type);
+        $.ajax({
+          url: helpers.githubUrl("/user"),
+          success: function(data){
+            helpers.cookie.create("current_user", JSON.stringify(data))
+            getMyGist.currentUser.updateInfo();
+          }
+        });
+      },
+      isLogged: function() {
+        return !!helpers.cookie.read("access_token");
+      },
+      updateInfo: function() {
+        var currentUser = this.info();
+        if(currentUser && currentUser.name){
+          $("#current_user img").attr("src", currentUser.avatar_url)
+            .attr("title", currentUser.name + " ("+currentUser.login+")")
+          $("#current_user").fadeIn(2000);
+        }
+      }
+    },
     page: {
       pages: {
         homepage: function() {
@@ -18,7 +48,7 @@
         gists: function(params){
           $("#loading").slideDown();
           if(params.access_token){
-            getMyGist.login(params.access_token, params.token_type);
+            getMyGist.currentUser.login(params.access_token, params.token_type);
           }
           $.ajax({
             url: helpers.githubUrl("/gists"),
@@ -106,7 +136,7 @@
       goTo: function(queryString){
         var page = queryString.page ? queryString.page : "homepage";
         $("#content section:visible, #loading:visible").slideUp();
-        getMyGist.updateUserInfo();
+        getMyGist.currentUser.updateInfo();
         this.pages[page](queryString);
       }
     },
@@ -134,29 +164,6 @@
       });
 
       e.preventDefault();
-    },
-
-    login: function(access_token, token_type){
-      if(access_token ==  helpers.cookie.read("access_token")){
-        return;
-      }
-      helpers.cookie.create("access_token", access_token);
-      helpers.cookie.create("token_type", token_type);
-      $.ajax({
-        url: helpers.githubUrl("/user"),
-        success: function(data){
-          helpers.cookie.create("current_user", JSON.stringify(data))
-          getMyGist.updateUserInfo();
-        }
-      });
-    },
-    updateUserInfo: function() {
-      var currentUser = JSON.parse(helpers.cookie.read("current_user"));
-      if(currentUser && currentUser.name){
-        $("#current_user img").attr("src", currentUser.avatar_url)
-          .attr("title", currentUser.name + " ("+currentUser.login+")")
-        $("#current_user").fadeIn(2000);
-      }
     }
   };
 
@@ -164,7 +171,7 @@
     var page = helpers.parseQueryString(window.location.search);
     getMyGist.page.goTo(page);
 
-    helpers.userIsLogged() ? $("a#myGists").show() : $("a#login").show()
+    getMyGist.currentUser.isLogged() ? $("a#myGists").show() : $("a#login").show()
 
     $("#login").click(function(){
       window.location = "https://github.com/login/oauth/authorize?client_id="+ github().clientId +"&scope="+ github().scope;
